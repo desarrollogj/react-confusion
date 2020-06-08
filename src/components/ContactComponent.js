@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Breadcrumb, BreadcrumbItem, Button, Row, Col, Label } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { Control, LocalForm, Errors } from 'react-redux-form';
+import { Control, Form, Errors, actions } from 'react-redux-form';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -10,84 +10,6 @@ const isNumber = (val) => !isNaN(Number(val));
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
 class Contact extends Component {
-    /*constructor(props) {
-        super(props);
-
-        this.state = {
-            firstname: '',
-            lastname: '',
-            telnum: '',
-            email: '',
-            agree: false,
-            contactType: 'Tel.',
-            message: '',
-            touched: {
-                firstname: false,
-                lastname: false,
-                telnum: false,
-                email: false,
-            }
-        };
-
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
-    }
-
-    handleSubmit(event) {
-        console.log('Current State is: ' + JSON.stringify(this.state));
-        alert('Current State is: ' + JSON.stringify(this.state));
-        event.preventDefault();
-    }
-
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-    
-        this.setState({
-          [name]: value
-        });
-    }
-
-    handleBlur = (field) => (evt) => {
-        this.setState({
-            touched: {  ...this.state.touched, [field]: true }
-        });
-    }
-
-    validate(firstname, lastname, telnum, email) {
-        const errors = {
-            firstname: '',
-            lastname: '',
-            telnum: '',
-            email: '',
-        }
-
-        if (this.state.touched.firstname && firstname.length < 3) {
-            errors.firstname = 'First name should be >= 3 characters';
-        } else if (this.state.touched.firstname && firstname.length > 10) {
-            errors.firstname = 'First name should be <= 10 characters';
-        }
-
-        if (this.state.touched.lastname && lastname.length < 3) {
-            errors.lastname = 'Last name should be >= 3 characters';
-        } else if (this.state.touched.lastname && lastname.length > 10) {
-            errors.lastname = 'Last name should be <= 10 characters';
-        }
-
-        const reg = /^\d+$/;
-        if (this.state.touched.telnum && !reg.test(telnum)) {
-            errors.telnum = 'Tel. number should contain only numbers';
-        }
-
-        if (this.state.touched.email && email.split('').filter(x => x === '@').length !== 1) {
-            errors.email = 'Email should contain a @';
-        }
-
-        return errors;
-    }*/
-
     constructor(props) {
         super(props);
 
@@ -97,15 +19,10 @@ class Contact extends Component {
     handleSubmit(values) {
         console.log('Current State is: ' + JSON.stringify(values));
         alert('Current State is: ' + JSON.stringify(values));
-        //event.preventDefault();
+        this.props.resetFeedbackForm();
     }
     
     render() {
-        /*const errors = this.validate(this.state.firstname, 
-            this.state.lastname, 
-            this.state.telnum, 
-            this.state.email);*/
-
         return (
             <div className="container">
                 <div className="row">
@@ -153,7 +70,7 @@ class Contact extends Component {
                       <h3>Send us your Feedback</h3>
                    </div>
                     <div className="col-12 col-md-9">
-                        <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+                        <Form model="feedback" onSubmit={(values) => this.handleSubmit(values)}>
                         <Row className="form-group">
                                 <Label htmlFor="firstname" md={2}>First Name</Label>
                                 <Col md={10}>
@@ -249,7 +166,7 @@ class Contact extends Component {
                                     </Button>
                                 </Col>
                             </Row>
-                        </LocalForm>
+                        </Form>
                     </div>
                </div>
             </div>
